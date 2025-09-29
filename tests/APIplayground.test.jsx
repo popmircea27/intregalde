@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { usePostsApi } from "../src/api/PostApi";
 import { useUsersApi } from "../src/api/UserApi";
+import { useHomepagePostsApi } from "../src/api/HomepagePostApi";
 
 export default function ApiPlayground() {
   const postsApi = usePostsApi();
   const usersApi = useUsersApi();
+  const homepageApi = useHomepagePostsApi();
 
   const [log, setLog] = useState([]);
 
@@ -63,6 +65,29 @@ export default function ApiPlayground() {
     }
   };
 
+  // ---------- HOMEPAGE POSTS ----------
+  const doHomepageList = async () => {
+    try {
+      const posts = await homepageApi.getAll();
+      addLog("homepage/getAll OK", posts);
+    } catch (e) {
+      addLog("homepage/getAll ERR", e.message || e.toString());
+    }
+  };
+
+  const doHomepageCreate = async () => {
+    try {
+      const hp = {
+        author: "admin",
+        content: "Homepage content " + Math.floor(Math.random() * 10000),
+      };
+      const created = await homepageApi.create(hp);
+      addLog("homepage/create OK", created);
+    } catch (e) {
+      addLog("homepage/create ERR", e.message || e.toString());
+    }
+  };
+
   return (
     <div>
       <h2>API Playground</h2>
@@ -80,6 +105,14 @@ export default function ApiPlayground() {
         <div>
           <button onClick={doPostsList}>GET /api/posts</button>
           <button onClick={doPostCreate}>POST /api/posts (create)</button>
+        </div>
+      </section>
+
+      <section>
+        <h3>Homepage Posts</h3>
+        <div>
+          <button onClick={doHomepageList}>GET /api/homepage</button>
+          <button onClick={doHomepageCreate}>POST /api/homepage (create)</button>
         </div>
       </section>
 
