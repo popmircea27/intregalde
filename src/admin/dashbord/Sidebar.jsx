@@ -1,26 +1,70 @@
+import React, { useEffect, useState } from "react";
+import "./dashbordStyle/Sidebar.css";
+
 export default function Sidebar({ activeTab, setActiveTab }) {
+  const [username, setUsername] = useState("");
+
+  useEffect(() => {
+    // caută cookie-ul numit "username"
+    const cookies = document.cookie.split(";").map((c) => c.trim());
+    const userCookie = cookies.find((c) => c.startsWith("username="));
+    if (userCookie) {
+      setUsername(userCookie.split("=")[1]);
+    }
+  }, []);
+
+  const handleLogout = () => {
+    // Șterge cookie-ul username
+    document.cookie =
+      "username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    // Redirecționează spre login (poți modifica ruta după cum ai nevoie)
+    window.location.href = "/login";
+  };
+
   return (
-    <aside className="w-64 bg-gray-800 text-white p-4 rounded-r-2xl">
-      <h2 className="text-xl font-bold mb-6">Admin Panel</h2>
-      <p className="mb-4">Logged in as: Admin</p>
-      <ul className="space-y-2">
+    <aside className="sidebar">
+      <h2 className="sidebar-title">Admin Panel</h2>
+      <p className="sidebar-user">Logged in as: {username || "Guest"}</p>
+      <ul className="sidebar-menu">
         <li
-          className={`px-2 py-1 rounded cursor-pointer hover:bg-gray-700 ${
-            activeTab === "homepage" ? "bg-gray-700" : ""
-          }`}
-          onClick={() => setActiveTab("homepage")}
+          className={`menu-item ${activeTab === "addAdmin" ? "active" : ""}`}
+          onClick={() => {
+            console.log("Ai selectat tab-ul: addAdmin"); 
+            setActiveTab("addAdmin")
+          }}
         >
-          Homepage
+          ➕ Adăugare Admini
         </li>
         <li
-          className={`px-2 py-1 rounded cursor-pointer hover:bg-gray-700 ${
-            activeTab === "posts" ? "bg-gray-700" : ""
-          }`}
-          onClick={() => setActiveTab("posts")}
+          className={`menu-item ${activeTab === "addPost" ? "active" : ""}`}
+          onClick={() => setActiveTab("addPost")}
         >
-          Posts
+          📝 Adăugare Postare Nouă
+        </li>
+        <li
+          className={`menu-item ${activeTab === "editPosts" ? "active" : ""}`}
+          onClick={() => setActiveTab("editPosts")}
+        >
+          ✏️ Vizualizare & Editare Posturi Vechi
+        </li>
+        <li
+          className={`menu-item ${activeTab === "story" ? "active" : ""}`}
+          onClick={() => setActiveTab("story")}
+        >
+          📖 Editare "Povestea Noastră"
+        </li>
+        <li
+          className={`menu-item ${activeTab === "stats" ? "active" : ""}`}
+          onClick={() => setActiveTab("stats")}
+        >
+          📊 Blog Stats
         </li>
       </ul>
+
+      {/* Buton de logout */}
+      <button className="logout-btn" onClick={handleLogout}>
+        Logout
+      </button>
     </aside>
   );
 }

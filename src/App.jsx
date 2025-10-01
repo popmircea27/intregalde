@@ -6,10 +6,11 @@ import LoginPage from "./admin/login/LoginPage";
 function App() {
   return (
     <Router>
-      <Navbar />
+      {/* <Navbar /> */}
       <Routes>
         <Route path="/" element={<LoginPage />} />
         <Route path="/dashboard" element={<DashBord />} />
+
       </Routes>
     </Router>
   );

@@ -10,19 +10,29 @@ export default function MainContent({ activeTab }) {
   const [homepagePosts, setHomepagePosts] = useState([]);
   const [allPosts, setAllPosts] = useState([]);
 
+  // helper: întoarce mereu un array
+  const toArray = (res) =>
+    Array.isArray(res?.data) ? res.data :
+    Array.isArray(res) ? res : [];
+
   // Fetch homepage posts
   useEffect(() => {
-    if (activeTab === "homepage") {
-      homepageApi.getAll().then(res => setHomepagePosts(res.data));
-    }
+    if (activeTab !== "homepage") return;
+    homepageApi.getAll()
+      .then((res) => setHomepagePosts(toArray(res)))
+      .catch(() => setHomepagePosts([]));
   }, [activeTab, homepageApi]);
 
   // Fetch posts
   useEffect(() => {
-    if (activeTab === "posts") {
-      postsApi.getAll().then(res => setAllPosts(res.data));
-    }
+    if (activeTab !== "posts") return;
+    postsApi.getAll()
+      .then((res) => setAllPosts(toArray(res)))
+      .catch(() => setAllPosts([]));
   }, [activeTab, postsApi]);
+
+  // cheie robustă pentru Mongo: _id.$oid || _id || id
+  const keyOf = (x) => x?.id ?? x?._id?.$oid ?? x?._id ?? crypto.randomUUID();
 
   return (
     <main className="flex-1 bg-gray-100 p-6 rounded-l-2xl">
@@ -30,8 +40,12 @@ export default function MainContent({ activeTab }) {
         <div>
           <h1 className="text-xl font-bold mb-4">Homepage Posts</h1>
           <ul>
-            {homepagePosts.map(post => (
-              <li key={post.id} className="mb-2">{post.title}</li>
+            {(homepagePosts ?? []).map((post) => (
+              <li key={keyOf(post)} className="mb-2">
+                {/* HomepagePost nu are title; afișăm content + author */}
+                <div className="font-medium">{post.content ?? "(fără conținut)"}</div>
+                {post.author && <div className="text-xs text-gray-600">by {post.author}</div>}
+              </li>
             ))}
           </ul>
         </div>
@@ -41,8 +55,11 @@ export default function MainContent({ activeTab }) {
         <div>
           <h1 className="text-xl font-bold mb-4">All Posts</h1>
           <ul>
-            {allPosts.map(post => (
-              <li key={post.id} className="mb-2">{post.title}</li>
+            {(allPosts ?? []).map((post) => (
+              <li key={keyOf(post)} className="mb-2">
+                <div className="font-medium">{post.title ?? "(untitled)"}</div>
+                {post.author && <div className="text-xs text-gray-600">by {post.author}</div>}
+              </li>
             ))}
           </ul>
         </div>

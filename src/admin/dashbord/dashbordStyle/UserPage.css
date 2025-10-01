@@ -1,0 +1,159 @@
+.user-page {
+  min-height: 100%;
+  width: 100%;
+  font-family: "Asap", sans-serif;
+  background-color: #f7f9f4;
+  padding: 20px;
+}
+
+
+/* titlu */
+.up-title {
+  font-family: "Encode Sans SC", sans-serif;
+  font-size: 1.8rem;
+  margin-bottom: 18px;
+  color: #2e3d16;
+}
+
+/* carduri */
+.card {
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  padding: 20px;
+  margin-bottom: 24px;
+  transition: box-shadow 0.2s ease;
+}
+.card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+
+/* lista admini */
+.list-card { padding: 16px 18px; }
+.admin-ul { list-style: none; margin: 0; padding: 0; }
+.admin-li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 8px;
+  border-bottom: 1px solid #eef3e7;
+}
+.admin-li:last-child { border-bottom: none; }
+
+.admin-info { display: flex; flex-direction: column; gap: 6px; }
+.admin-name { display: flex; align-items: center; gap: 10px; }
+.admin-role {
+  background: #eef4e1;
+  color: #2a3b18;
+  padding: 2px 10px;
+  font-size: 0.8rem;
+  border-radius: 999px;
+  font-weight: 700;
+}
+.admin-meta { display: flex; gap: 14px; color: #3c4a28; font-size: 0.95rem; }
+.admin-actions { display: flex; gap: 8px; }
+
+.empty { color: #6a745c; padding: 8px 0; }
+
+/* mesaje */
+.info { color: #2e3d16; margin-bottom: 8px; }
+.error {
+  color: #8a1f1f;
+  background: #fdeaea;
+  border: 1px solid #f6bcbc;
+  border-radius: 12px;
+  padding: 10px 12px;
+  font-weight: 600;
+}
+.ok-msg {
+  grid-column: 1 / -1;
+  color: #2e7d32;
+  background: #e5f7e7;
+  border: 1px solid #b4e1b8;
+  border-radius: 12px;
+  padding: 10px 12px;
+  margin-top: 10px;
+  font-weight: 700;
+}
+
+/* CASETA DE ACȚIUNI – fără padding pe card, spațiu în interior controlat de conținut */
+.actions-card {
+  padding: 0;                 /* fără padding pe card */
+  overflow: hidden;           /* colțuri curate */
+}
+.actions-header {
+  padding: 16px 20px;         /* doar header are padding */
+  border-bottom: 1px solid #eef3e7;
+  background: #fbfdf7;
+}
+
+/* buton toggle */
+.toggle { width: 100%; }
+
+/* formular mare din caseta de acțiuni */
+.big-form {
+  padding: 18px 20px;         /* padding controlat pe form, nu pe card */
+  display: grid;
+  grid-template-columns: repeat(2, minmax(280px, 1fr));
+  gap: 18px 22px;
+  background: #ffffff;
+}
+
+.row { display: flex; flex-direction: column; gap: 6px; }
+.row label { font-size: 0.95rem; color: #2e3d16; font-weight: 700; }
+
+/* câmpuri prietenoase, rotunjite */
+.big-form input,
+.form input,
+.form select {
+  border: 1px solid #c8d1b3;
+  background: #fff;
+  padding: 12px 14px;
+  border-radius: 14px;
+  font-size: 1rem;
+  outline: none;
+  font-family: "Asap", sans-serif;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.big-form input:focus,
+.form input:focus,
+.form select:focus {
+  border-color: #556b2f;
+  box-shadow: 0 0 0 3px rgba(85,107,47,0.2);
+}
+
+/* acțiuni insert */
+.actions-row {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* butoane */
+.btn {
+  border: none;
+  border-radius: 14px;
+  padding: 12px 16px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  font-weight: 700;
+  text-align: center;
+  font-family: "Asap", sans-serif;
+}
+.btn:hover { transform: translateY(-1px); }
+.btn:active { transform: scale(0.97); }
+
+.btn-primary { background: #556b2f; color: #fff; }
+.btn-primary:hover { background: #3d5220; }
+
+.btn-secondary { background: #e8eddc; color: #2e3d16; }
+.btn-secondary:hover { background: #dfe6cf; }
+
+.btn-danger { background: #8b2f2f; color: #fff; }
+.btn-danger:hover { background: #6f2525; }
+
+.btn-success { background: #3d5220; color: #fff; min-width: 180px; }
+.btn-success:hover { background: #2e3d16; }
+
+/* responsive */
+@media (max-width: 900px) {
+  .big-form { grid-template-columns: 1fr; }
+}

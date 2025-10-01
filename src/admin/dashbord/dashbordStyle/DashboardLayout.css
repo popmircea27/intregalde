@@ -1,0 +1,38 @@
+/* DashboardLayout.css */
+html, body, #root {
+  height: 100%;
+}
+
+.dashboard {
+  display: flex;
+  min-height: 100vh;         /* înlocuiește h-screen */
+  background: #f7f9f4;
+}
+
+/* Sidebar fix (nu se micșorează) */
+.sidebar {
+  flex: 0 0 240px;           /* lățime fixă */
+  flex-shrink: 0;            /* IMPORTANT */
+  z-index: 1;
+}
+
+/* Dreapta ocupă restul, fără overflow orizontal */
+.content {
+  flex: 1 1 auto;
+  min-width: 0;              /* SUPER IMPORTANT: previne “shrink/overflow” */
+  overflow: auto;            /* scroll doar pe content */
+  /* dacă vrei padding general, îl pui pe .content-inner ca să nu strângă conținutul */
+}
+
+.content-inner {
+  padding: 20px;             /* spațiu respirabil */
+  max-width: 1280px;         /* opțional: scoate dacă vrei full width */
+  margin: 0 auto;            /* centrează pe ecrane late */
+}
+
+/* Mobil: dacă vrei să stivezi sidebar-ul sus */
+@media (max-width: 900px) {
+  .dashboard { flex-direction: column; }
+  .sidebar { width: 100%; flex: 0 0 auto; }
+  .content-inner { padding: 14px; max-width: 100%; }
+}
