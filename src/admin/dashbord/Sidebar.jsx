@@ -4,14 +4,12 @@ import "./dashbordStyle/Sidebar.css";
 export default function Sidebar({ activeTab, setActiveTab }) {
   const [username, setUsername] = useState("");
 
+  //AM MODIFICAT aici , pt ca mi dadaea forbidden acces(pe langa faptul ca ma arata logat ca guest)
   useEffect(() => {
-    // caută cookie-ul numit "username"
-    const cookies = document.cookie.split(";").map((c) => c.trim());
-    const userCookie = cookies.find((c) => c.startsWith("username="));
-    if (userCookie) {
-      setUsername(userCookie.split("=")[1]);
-    }
+    const user = localStorage.getItem("username");
+    if (user) setUsername(user);
   }, []);
+
 
   const handleLogout = () => {
     // Șterge cookie-ul username
@@ -29,7 +27,7 @@ export default function Sidebar({ activeTab, setActiveTab }) {
         <li
           className={`menu-item ${activeTab === "addAdmin" ? "active" : ""}`}
           onClick={() => {
-            console.log("Ai selectat tab-ul: addAdmin"); 
+            console.log("Ai selectat tab-ul: addAdmin");
             setActiveTab("addAdmin")
           }}
         >

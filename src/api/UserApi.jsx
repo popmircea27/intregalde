@@ -18,11 +18,15 @@ export function useUsersApi() {
         const isFormData = body instanceof FormData;
         const isUrlEncoded = asFormUrlEncoded && body instanceof URLSearchParams;
 
+        // 🔑 Ia token-ul JWT din localStorage
+        const token = localStorage.getItem('token');
+
         const finalHeaders = {
             'Accept': 'application/json, text/plain;q=0.9,*/*;q=0.8',
             ...(isFormData || isUrlEncoded ? {} : { 'Content-Type': 'application/json' }),
             ...(isUrlEncoded ? { 'Content-Type': 'application/x-www-form-urlencoded' } : {}),
-            ...(headers || {})
+            ...(headers || {}),
+            ...(token ? { 'Authorization': `Bearer ${token}` } : {}) // trimite token-ul automat
         };
 
         const res = await fetch(url, {

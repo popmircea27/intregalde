@@ -1,0 +1,159 @@
+/* PostsAdmin.css */
+.posts-admin-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 20px;
+}
+
+/* Formularul de creare/editare postare */
+.form-section {
+  flex: 1 1 300px;
+  max-width: 400px;
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.form-section h2 {
+  margin-bottom: 15px;
+  font-size: 1.2rem;
+  color: #333;
+}
+
+.form-section input,
+.form-section textarea {
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 0.95rem;
+}
+
+.form-section textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.form-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.form-buttons button {
+  padding: 8px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.form-buttons button:first-child {
+  background-color: #4caf50;
+  color: white;
+}
+
+.form-buttons button:last-child {
+  background-color: #f44336;
+  color: white;
+}
+
+/* Lista postărilor */
+.posts-list-section {
+  flex: 2 1 500px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  padding: 20px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.posts-list-section h2 {
+  margin-bottom: 15px;
+  font-size: 1.2rem;
+  color: #333;
+}
+
+.posts-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.post-card {
+  background-color: #fff;
+  padding: 15px;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.1);
+}
+
+.post-card h3 {
+  margin: 0 0 5px 0;
+  font-size: 1rem;
+  color: #222;
+}
+
+.post-card p {
+  margin: 0 0 8px 0;
+  font-size: 0.95rem;
+  color: #555;
+}
+
+.post-card small {
+  display: block;
+  font-size: 0.8rem;
+  color: #888;
+  margin-bottom: 8px;
+}
+
+.post-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.post-buttons button {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.post-buttons button:first-child {
+  background-color: #2196f3;
+  color: white;
+}
+
+.post-buttons button:last-child {
+  background-color: #f44336;
+  color: white;
+}
+
+/* Scrollbar custom pentru lista postărilor */
+.posts-list-section::-webkit-scrollbar {
+  width: 8px;
+}
+
+.posts-list-section::-webkit-scrollbar-thumb {
+  background-color: rgba(0,0,0,0.2);
+  border-radius: 4px;
+}
+
+.posts-list-section::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .posts-admin-container {
+    flex-direction: column;
+  }
+
+  .form-section,
+  .posts-list-section {
+    max-width: 100%;
+  }
+}

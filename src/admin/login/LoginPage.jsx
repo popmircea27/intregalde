@@ -3,11 +3,12 @@
 // =============================
 import React, { useState } from 'react';
 import { useUsersApi } from '../../api/UserApi'; // ajustează după structura ta
+import { useNavigate } from 'react-router-dom';
 import './LoginPage.css';
 
 export default function LoginPage({ onSuccess }) {
   const { post } = useUsersApi();
-
+  const navigate = useNavigate();
   const [step, setStep] = useState("login"); // "login" sau "otp"
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -33,6 +34,12 @@ export default function LoginPage({ onSuccess }) {
         const data = await post('/api/auth/verify-otp', { email, otp });
         console.log("OTP response:", data);
         onSuccess?.(data); // aici primești JWT token
+        // salvăm username/email în localStorage
+        localStorage.setItem("username", email);
+        // salvăm token-ul pentru request-uri ulterioare
+        localStorage.setItem("token", data.token);
+
+        navigate("/dashboard");
       }
 
     } catch (err) {
