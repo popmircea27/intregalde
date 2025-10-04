@@ -17,9 +17,11 @@ export default function PostsAdmin() {
         title: p.title,
         content: p.content,
         author: p.author,
+        images: p.images || [],   // ← aici păstrezi imaginile
         createdAt: p.createdAt || new Date().toLocaleString(),
         updatedAt: p.updatedAt || new Date().toLocaleString(),
     });
+
 
     const fetchPosts = async () => {
         setLoading(true);
@@ -85,6 +87,31 @@ export default function PostsAdmin() {
             alert(err?.message || "Nu s-a putut salva postarea");
         }
     };
+    const handleUploadImage = async (postId, file) => {
+        if (!file) return;
+
+        const formData = new FormData();
+        formData.append("file", file);
+
+        try {
+            const token = localStorage.getItem("token"); // token-ul JWT salvat la login
+            const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/posts/${postId}/upload-image`, {
+                method: "POST",
+                headers: {
+                    Authorization: `Bearer ${token}`
+                },
+                body: formData,
+            });
+
+            const updatedPost = await res.json();
+
+            setPosts((prev) =>
+                prev.map((p) => (p._id === updatedPost._id ? { ...p, ...updatedPost } : p))
+            );
+        } catch (err) {
+            alert("Eroare la upload imagine");
+        }
+    };
 
 
     const handleEdit = (post) => {
@@ -132,6 +159,13 @@ export default function PostsAdmin() {
                         value={form.author || username}
                         onChange={handleChange}
                     />
+                    <input
+                        type="file"
+                        disabled={!form._id}
+                        onChange={(e) => handleUploadImage(form._id, e.target.files[0])}
+                    />
+
+
                     <div className="form-buttons">
                         <button type="submit">
                             {isEditing ? "Update" : "Create"}
@@ -160,6 +194,19 @@ export default function PostsAdmin() {
                     {posts.map((p) => (
                         <li key={p._id || Math.random()} className="post-card">
                             <h3>{p.title}</h3>
+                            {p.images?.map((img, idx) => (
+                                <div key={idx} className="post-image-container">
+                                    <img
+                                        src={`${import.meta.env.VITE_API_BASE_URL}${img}`}
+                                        alt={`${p.title}-${idx}`}
+                                        className="post-image"
+                                    />
+
+
+                                </div>
+                            ))}
+
+
                             <p>{p.content}</p>
                             <small>
                                 Autor: {p.author} | Creare: {p.createdAt || "N/A"} | Modificat:{" "}
