@@ -5,6 +5,8 @@ import MainContent from "./MainContent";
 import UserPage from "./UserPage";
 import "./dashbordStyle/DashboardLayout.css"; // 👈 nou
 import PostsAdmin from "./PostsAdmin"; // ajustează calea
+import PovesteaNoastraAdmin from "./PovesteaNoastraAdmin";
+
 
 
 export default function DashBord() {
@@ -22,6 +24,10 @@ export default function DashBord() {
           {activeTab === "addPost" && <PostsAdmin tab="add" />}
           {activeTab === "editPosts" && <PostsAdmin tab="edit" />}
           {activeTab === "addAdmin" && <UserPage />}
+          {activeTab === "poveste" && <PovesteaNoastraAdmin />}
+
+
+
           {activeTab !== "addAdmin" && activeTab !== "addPost" && activeTab !== "editPosts" && (
             <MainContent activeTab={activeTab} />
           )}

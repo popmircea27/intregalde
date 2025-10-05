@@ -46,11 +46,13 @@ export default function Sidebar({ activeTab, setActiveTab }) {
           ✏️ Vizualizare & Editare Posturi Vechi
         </li>
         <li
-          className={`menu-item ${activeTab === "story" ? "active" : ""}`}
-          onClick={() => setActiveTab("story")}
+          className={`menu-item ${activeTab === "poveste" ? "active" : ""}`}
+          onClick={() => setActiveTab("poveste")}
         >
-          📖 Editare "Povestea Noastră"
+          📖 Povestea Noastră
         </li>
+
+
         <li
           className={`menu-item ${activeTab === "stats" ? "active" : ""}`}
           onClick={() => setActiveTab("stats")}
