@@ -1,21 +1,29 @@
 import React, { useEffect, useState } from "react";
+import {
+  MdPersonAddAlt1,
+  MdPostAdd,
+  MdEditNote,
+  MdLibraryBooks,
+  MdBarChart,
+  MdLogout,
+} from "react-icons/md";
 import "./dashbordStyle/Sidebar.css";
 
 export default function Sidebar({ activeTab, setActiveTab }) {
   const [username, setUsername] = useState("");
 
-  //AM MODIFICAT aici , pt ca mi dadaea forbidden acces(pe langa faptul ca ma arata logat ca guest)
   useEffect(() => {
-    const user = localStorage.getItem("username");
-    if (user) setUsername(user);
-  }, []);
+  const user = localStorage.getItem("username");
+  if (user) {
+    const usernamePart = user.includes("@") ? user.split("@")[0] : user;
+    setUsername(usernamePart);
+  }
+}, []);
 
 
   const handleLogout = () => {
-    // Șterge cookie-ul username
     document.cookie =
       "username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-    // Redirecționează spre login (poți modifica ruta după cum ai nevoie)
     window.location.href = "/login";
   };
 
@@ -23,46 +31,51 @@ export default function Sidebar({ activeTab, setActiveTab }) {
     <aside className="sidebar">
       <h2 className="sidebar-title">Admin Panel</h2>
       <p className="sidebar-user">Logged in as: {username || "Guest"}</p>
+
       <ul className="sidebar-menu">
         <li
           className={`menu-item ${activeTab === "addAdmin" ? "active" : ""}`}
-          onClick={() => {
-            console.log("Ai selectat tab-ul: addAdmin");
-            setActiveTab("addAdmin")
-          }}
+          onClick={() => setActiveTab("addAdmin")}
         >
-          ➕ Adăugare Admini
+          <MdPersonAddAlt1 className="menu-icon" />
+          Adăugare Admini
         </li>
+
         <li
           className={`menu-item ${activeTab === "addPost" ? "active" : ""}`}
           onClick={() => setActiveTab("addPost")}
         >
-          📝 Adăugare Postare Nouă
+          <MdPostAdd className="menu-icon" />
+          Adăugare Postare Nouă
         </li>
+
         <li
           className={`menu-item ${activeTab === "editPosts" ? "active" : ""}`}
           onClick={() => setActiveTab("editPosts")}
         >
-          ✏️ Vizualizare & Editare Posturi Vechi
+          <MdEditNote className="menu-icon" />
+          Vizualizare & Editare Posturi Vechi
         </li>
+
         <li
           className={`menu-item ${activeTab === "poveste" ? "active" : ""}`}
           onClick={() => setActiveTab("poveste")}
         >
-          📖 Povestea Noastră
+          <MdLibraryBooks className="menu-icon" />
+          Povestea Noastră
         </li>
-
 
         <li
           className={`menu-item ${activeTab === "stats" ? "active" : ""}`}
           onClick={() => setActiveTab("stats")}
         >
-          📊 Blog Stats
+          <MdBarChart className="menu-icon" />
+          Blog Stats
         </li>
       </ul>
 
-      {/* Buton de logout */}
       <button className="logout-btn" onClick={handleLogout}>
+        <MdLogout className="menu-icon" />
         Logout
       </button>
     </aside>

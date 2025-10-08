@@ -86,3 +86,10 @@
   background-color: #1f2810;
   transform: scale(0.98);
 }
+
+
+.menu-item svg {
+  margin-right: 8px;  /* aici ajustezi spațiul între iconiță și text */
+  vertical-align: middle;
+  font-size: 1.6em;   /* opțional: mărimea iconiței */
+}

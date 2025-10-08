@@ -1,79 +1,161 @@
-/* PostsAdmin.css */
+/* Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Asap:ital,wght@0,100..900;1,100..900&display=swap');
+
+:root{
+  /* Olive palette */
+  --olive-50:  #f6f8ef;
+  --olive-100: #edf2dd;
+  --olive-200: #dbe5ba;
+  --olive-300: #c8d896;
+  --olive-400: #aeca66;
+  --olive-500: #8eb83c;  /* primary */
+  --olive-600: #6b8e23;  /* deep olive */
+  --olive-700: #5a7a1e;
+  --olive-800: #435a16;
+  --olive-900: #2a380d;
+
+  --text-900: #222;
+  --text-700: #444;
+  --text-500: #666;
+
+  --surface: #ffffff;
+  --surface-alt: var(--olive-50);
+  --shadow: 0 2px 12px rgba(0,0,0,0.08);
+  --radius-lg: 16px;
+  --radius-md: 12px;
+  --radius-sm: 8px;
+
+  --focus: 0 0 0 3px rgba(142,184,60,0.35);
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  font-family: "Asap", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  color: var(--text-900);
+  background: var(--surface-alt);
+}
+
+/* Container */
 .posts-admin-container {
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
-  padding: 20px;
+  gap: 24px;
+  padding: 24px;
+  align-items: flex-start;
 }
 
 /* Formularul de creare/editare postare */
 .form-section {
-  flex: 1 1 300px;
-  max-width: 400px;
-  background-color: #fff;
-  border-radius: 10px;
+  flex: 1 1 320px;
+  max-width: 420px;
+  background-color: var(--surface);
+  border-radius: var(--radius-lg);
   padding: 20px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  box-shadow: var(--shadow);
+  border: 1px solid var(--olive-100);
 }
 
+/* TITLU: Asap, centrat, puțin mai mare */
 .form-section h2 {
-  margin-bottom: 15px;
-  font-size: 1.2rem;
-  color: #333;
+  margin: 0 0 16px 0;
+  font-family: "Asap", sans-serif;
+  font-weight: 800;
+  font-size: 1.5rem;      /* ↑ mai mare decât 1.25rem */
+  line-height: 1.2;
+  color: var(--olive-800);
+  text-align: center;     /* centrat */
+  letter-spacing: 0.2px;  /* foarte subtil, pentru claritate */
 }
 
 .form-section input,
 .form-section textarea {
   width: 100%;
-  margin-bottom: 10px;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  margin-bottom: 12px;
+  padding: 12px 14px;
+  border: 1px solid var(--olive-200);
+  border-radius: var(--radius-md);
   font-size: 0.95rem;
+  outline: none;
+  background: #fff;
+  transition: border-color .2s ease, box-shadow .2s ease;
+}
+
+.form-section input:focus,
+.form-section textarea:focus {
+  border-color: var(--olive-500);
+  box-shadow: var(--focus);
 }
 
 .form-section textarea {
-  min-height: 100px;
+  min-height: 120px;
   resize: vertical;
 }
 
-.form-buttons {
-  display: flex;
-  gap: 10px;
-}
 
-.form-buttons button {
-  padding: 8px 15px;
+/* Buttons (pill style) */
+.btn {
+  appearance: none;
   border: none;
-  border-radius: 5px;
+  border-radius: 9999px; /* pill */
+  padding: 12px 18px;
+  font-weight: 700;
   cursor: pointer;
-  font-weight: bold;
+  transition: transform .06s ease, filter .2s ease, background-color .2s ease;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04);
 }
 
-.form-buttons button:first-child {
-  background-color: #4caf50;
-  color: white;
-}
+.btn:active { transform: translateY(1px); }
 
-.form-buttons button:last-child {
-  background-color: #f44336;
-  color: white;
+.btn-primary {
+  background: var(--olive-600);
+  color: #fff;
+  
 }
+.btn-primary:hover { filter: brightness(1.05); }
+
+.btn-secondary {
+  background: var(--olive-500);
+  color: #fff;
+}
+.btn-secondary:hover { filter: brightness(1.07); }
+
+.btn-ghost {
+  background: var(--olive-100);
+  color: var(--olive-800);
+}
+.btn-ghost:hover { filter: brightness(1.03); }
+
+.btn-danger {
+  background: #d9534f;
+  color: #fff;
+}
+.btn-danger:hover { filter: brightness(1.05); }
+
+.btn-full { width: 100%; justify-content: center; }
 
 /* Lista postărilor */
 .posts-list-section {
-  flex: 2 1 500px;
-  background-color: #f9f9f9;
-  border-radius: 10px;
+  flex: 2 1 540px;
+  background-color: var(--surface);
+  border-radius: var(--radius-lg);
   padding: 20px;
   max-height: 80vh;
   overflow-y: auto;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--olive-100);
 }
 
 .posts-list-section h2 {
-  margin-bottom: 15px;
-  font-size: 1.2rem;
-  color: #333;
+  margin-bottom: 16px;
+  font-size: 1.25rem;
+  color: var(--olive-800);
+}
+
+.error {
+  color: #b00020;
+  font-weight: 600;
+  margin-bottom: 10px;
 }
 
 .posts-list {
@@ -84,76 +166,196 @@
 
 .post-card {
   background-color: #fff;
-  padding: 15px;
-  margin-bottom: 15px;
-  border-radius: 8px;
-  box-shadow: 0 1px 6px rgba(0,0,0,0.1);
+  padding: 16px;
+  margin-bottom: 16px;
+  border-radius: var(--radius-md);
+  box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+  border: 1px solid var(--olive-100);
 }
 
 .post-card h3 {
-  margin: 0 0 5px 0;
-  font-size: 1rem;
-  color: #222;
+  margin: 0 0 8px 0;
+  font-size: 1.05rem;
+  color: var(--text-900);
 }
 
 .post-card p {
-  margin: 0 0 8px 0;
+  margin: 0 0 10px 0;
   font-size: 0.95rem;
-  color: #555;
+  color: var(--text-700);
+  line-height: 1.45;
 }
 
-.post-card small {
+/* Meta row */
+.meta {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 6px 12px;
+  font-size: 0.85rem;
+  color: var(--text-500);
+  margin-bottom: 12px;
+}
+
+/* Images grid - constrained to show small thumbnails */
+.images-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 12px 0;
+}
+
+.post-image-container {
+  width: 150px;
+  height: 150px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  border: 1px solid var(--olive-100);
+  background: var(--olive-50);
+  flex-shrink: 0;
+}
+
+.post-image {
   display: block;
-  font-size: 0.8rem;
-  color: #888;
-  margin-bottom: 8px;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
+/* Per-post upload row (în card) */
+.upload-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 8px 0 12px;
+}
+
+/* Ascund input-ul din card, folosesc label.btn */
+.file-input {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+/* Post action buttons */
 .post-buttons {
   display: flex;
   gap: 10px;
+  margin-bottom: 10px;
 }
 
-.post-buttons button {
-  padding: 5px 10px;
+/* -------- Upload din formular: identic cu butonul "Create" -------- */
+.inline-upload {
+  display: flex;
+  justify-content: center;
+  margin: 12px 0;
+}
+
+/* ascundem inputul nativ */
+.inline-upload input[type="file"] { display: none; }
+
+/* butonul vizibil */
+.upload-btn {
+  background: var(--olive-600);
+  color: #fff;
+  font-family: "Asap", sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  padding: 14px 22px;
   border: none;
-  border-radius: 5px;
+  border-radius: 16px;   /* ca butonul Create din screenshot */
   cursor: pointer;
+  width: 100%;           /* full width ca Create */
+  text-align: center;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.12);
+  transition: transform .06s ease, filter .2s ease, background-color .2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+.upload-btn:hover { filter: brightness(1.05); }
+.upload-btn:active { transform: translateY(1px); }
+.upload-btn:disabled { opacity: 0.55; cursor: not-allowed; }
+.upload-btn .clip { font-size: 1.1rem; line-height: 1; }
+
+/* Meta după butoane (stil separat) */
+.meta.meta-after {
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 6px 12px;
   font-size: 0.85rem;
+  color: #2f2f2f; /* gri mai închis */
 }
 
-.post-buttons button:first-child {
-  background-color: #2196f3;
-  color: white;
-}
-
-.post-buttons button:last-child {
-  background-color: #f44336;
-  color: white;
+/* Bullets între elementele meta */
+.meta.meta-after span:not(:last-child)::after {
+  content: "";
+  margin: 0 6px;
+  color: #555;
 }
 
 /* Scrollbar custom pentru lista postărilor */
-.posts-list-section::-webkit-scrollbar {
-  width: 8px;
-}
-
+.posts-list-section::-webkit-scrollbar { width: 10px; }
 .posts-list-section::-webkit-scrollbar-thumb {
-  background-color: rgba(0,0,0,0.2);
-  border-radius: 4px;
+  background-color: rgba(0,0,0,0.18);
+  border-radius: 6px;
 }
-
-.posts-list-section::-webkit-scrollbar-track {
-  background-color: transparent;
-}
+.posts-list-section::-webkit-scrollbar-track { background-color: transparent; }
 
 /* Responsive */
 @media (max-width: 900px) {
-  .posts-admin-container {
-    flex-direction: column;
-  }
+  .posts-admin-container { flex-direction: column; }
+  .form-section, .posts-list-section { max-width: 100%; }
+}
 
-  .form-section,
-  .posts-list-section {
-    max-width: 100%;
+/* Responsive image sizes for mobile */
+@media (max-width: 768px) {
+  .images-grid {
+    gap: 8px;
   }
+  
+  .post-image-container {
+    width: 120px;
+    height: 120px;
+  }
+}
+
+/* Focus outlines for accessibility */
+.btn:focus-visible,
+.form-section input:focus-visible,
+.form-section textarea:focus-visible,
+.inline-upload .upload-btn:focus-visible,
+.posts-list-section:focus-visible {
+  outline: none;
+  box-shadow: var(--focus);
+}
+
+/* Buton principal mare, vizibil – aliniat cu upload */
+.btn-hero {
+  font-family: "Asap", sans-serif;   /* identic cu upload */
+  font-weight: 800;
+  font-size: 1.08rem;                /* mai mare */
+  padding: 16px 24px;                /* mai înalt/lățit */
+  border-radius: 140px;               /* ca upload */
+  letter-spacing: 0.2px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.14);  /* mai vizibil */
+}
+
+/* opțional: un pic mai „tare" la hover */
+.form-buttons .btn-primary:hover {
+  filter: brightness(1.07);
+  padding: 3px;
+
+}
+
+.form-buttons {
+  display: flex;
+  flex-wrap: wrap;   /* ca să nu se suprapună pe ecrane mici */
+  gap: 12px;         /* distanță între butoane */
+  margin-top: 10px;  /* spațiu față de conținutul de sus */
 }

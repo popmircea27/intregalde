@@ -1,15 +1,16 @@
 // =============================
-// LoginPage.jsx (React)
+// LoginPage.jsx
 // =============================
 import React, { useState } from 'react';
-import { useUsersApi } from '../../api/UserApi'; // ajustează după structura ta
+import { useUsersApi } from '../../api/UserApi';
 import { useNavigate } from 'react-router-dom';
+import { RiEyeLine, RiEyeOffLine } from 'react-icons/ri';
 import './LoginPage.css';
 
 export default function LoginPage({ onSuccess }) {
   const { post } = useUsersApi();
   const navigate = useNavigate();
-  const [step, setStep] = useState("login"); // "login" sau "otp"
+  const [step, setStep] = useState("login");
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [otp, setOtp] = useState('');
@@ -23,25 +24,18 @@ export default function LoginPage({ onSuccess }) {
 
     try {
       setLoading(true);
-
       if (step === "login") {
-        // pasul 1: trimite email + parola
         const data = await post('/api/auth/login', { email, password });
         console.log("Login response:", data);
-        setStep("otp"); // trece la pasul OTP
+        setStep("otp");
       } else if (step === "otp") {
-        // pasul 2: verifică OTP
         const data = await post('/api/auth/verify-otp', { email, otp });
         console.log("OTP response:", data);
-        onSuccess?.(data); // aici primești JWT token
-        // salvăm username/email în localStorage
+        onSuccess?.(data);
         localStorage.setItem("username", email);
-        // salvăm token-ul pentru request-uri ulterioare
         localStorage.setItem("token", data.token);
-
         navigate("/dashboard");
       }
-
     } catch (err) {
       const msg = err?.data?.message || err?.message || 'Eroare la autentificare';
       setError(msg);
@@ -55,7 +49,7 @@ export default function LoginPage({ onSuccess }) {
       <div className="formShell">
         <div className="formWrap">
           <form className="card" onSubmit={handleSubmit}>
-            {error ? <div role="alert" className="error">{error}</div> : null}
+            {error && <div role="alert" className="error">{error}</div>}
 
             {step === "login" && (
               <>
@@ -74,7 +68,7 @@ export default function LoginPage({ onSuccess }) {
 
                 <div className="field">
                   <label htmlFor="password">Parolă</label>
-                  <div className="controlRow">
+                  <div className="passwordWrapper">
                     <input
                       id="password"
                       className="input"
@@ -86,10 +80,11 @@ export default function LoginPage({ onSuccess }) {
                     />
                     <button
                       type="button"
-                      className="toggle"
+                      className="eyeBtn"
                       onClick={() => setShowPassword((s) => !s)}
+                      aria-label={showPassword ? "Ascunde parola" : "Arată parola"}
                     >
-                      {showPassword ? "Ascunde" : "Arată"}
+                      {showPassword ? <RiEyeOffLine size={22}/> : <RiEyeLine size={22}/>}
                     </button>
                   </div>
                 </div>
@@ -105,7 +100,7 @@ export default function LoginPage({ onSuccess }) {
                   <label htmlFor="otp">Cod OTP</label>
                   <input
                     id="otp"
-                    className="input"
+                    className="input otp"
                     type="text"
                     value={otp}
                     onChange={(e) => setOtp(e.target.value)}
@@ -120,6 +115,11 @@ export default function LoginPage({ onSuccess }) {
               <button className="btn btn-primary" type="submit" disabled={loading}>
                 {loading ? 'Se procesează…' : step === "login" ? 'Intră în cont' : 'Verifică OTP'}
               </button>
+
+              {/* textul informativ de jos */}
+              <p className="subnote">
+                Nu este posibilă logarea simultană a doi administratori pe această pagină.
+              </p>
             </div>
           </form>
         </div>
