@@ -1,182 +1,188 @@
 import React, { useEffect, useState } from "react";
-import "./dashbordStyle/UserPage.css";
 import { useUsersApi } from "../../api/UserApi";
+import "./dashbordStyle/UserPage.css";
 
 export default function UserPage() {
   const usersApi = useUsersApi();
 
-  const [admins, setAdmins] = useState([]);
+  const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-
-  const [isAddOpen, setIsAddOpen] = useState(false);
-  const [insertOkMsg, setInsertOkMsg] = useState("");
-
-  // rolul este fix ADMIN; nu îl mai arătăm în UI
+  const [isEditing, setIsEditing] = useState(false);
   const [form, setForm] = useState({
     username: "",
     password: "",
     email: "",
     phone: "",
+    role: "ADMIN",
+    id: null,
   });
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setForm((f) => ({ ...f, [name]: value }));
-  };
-
-  const resetForm = () =>
-    setForm({ username: "", password: "", email: "", phone: "" });
-
-  const fetchAdmins = async () => {
+  const fetchUsers = async () => {
     setLoading(true);
-    setError("");
     try {
-      const data = await usersApi.get("/users", { role: "ADMIN" });
-      const arr = Array.isArray(data?.data) ? data.data : Array.isArray(data) ? data : [];
-      setAdmins(arr);
+      const data = await usersApi.get("/api/users");
+      setUsers(data);
     } catch (err) {
-      setError(err?.message || "Eroare la încărcarea utilizatorilor");
-      setAdmins([]);
+      setError(err.message || "Eroare la încărcarea utilizatorilor");
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchAdmins();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    fetchUsers();
   }, []);
 
-  const keyOf = (u) =>
-    u?.id ?? u?._id?.$oid ?? u?._id ?? `${u?.username}-${Math.random()}`;
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
+  };
 
-  const handleDelete = async (user) => {
-    if (!window.confirm(`Ștergi utilizatorul "${user?.username}"?`)) return;
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!form.username.trim() || !form.password.trim() || !form.email.trim()) {
+      alert("Username, parolă și email sunt obligatorii!");
+      return;
+    }
+
+    const userData = {
+      id: form.id,
+      username: form.username,
+      password: form.password,
+      email: form.email,
+      phone: form.phone,
+      role: "ADMIN",
+    };
+
     try {
-      await usersApi.del(`/users/${user.id || user?._id || user?._id?.$oid || ""}`);
-      await fetchAdmins();
+      let newUser;
+      if (isEditing && form.id) {
+        newUser = await usersApi.put(`/api/users/${form.id}`, userData);
+      } else {
+        newUser = await usersApi.post("/api/users", userData);
+      }
+
+      setForm({
+        username: "",
+        password: "",
+        email: "",
+        phone: "",
+        role: "ADMIN",
+        id: null,
+      });
+      setIsEditing(false);
+      fetchUsers();
     } catch (err) {
-      alert(err?.message || "Nu s-a putut șterge utilizatorul.");
+      alert(err.message || "Eroare la salvarea adminului");
     }
   };
 
   const handleEdit = (user) => {
-    alert(`Editează utilizatorul: ${user?.username}`);
+    setForm({
+      username: user.username,
+      password: "",
+      email: user.email,
+      phone: user.phone || "",
+      role: user.role || "ADMIN",
+      id: user.id || user._id,
+    });
+    setIsEditing(true);
   };
 
-  const handleInsert = async () => {
-    setInsertOkMsg("");
+  const handleDelete = async (user) => {
+    if (!window.confirm(`Sigur vrei să ștergi adminul ${user.username}?`)) return;
     try {
-      // trimitem întotdeauna role: "ADMIN"
-      await usersApi.post("/users", { ...form, role: "ADMIN" });
-      setInsertOkMsg("Inserția a fost realizată cu succes.");
-      resetForm();
-      setIsAddOpen(false);
-      await fetchAdmins();
+      await usersApi.del(`/api/users/${user.id || user._id}`);
+      setUsers((prev) =>
+        prev.filter(
+          (u) => (u._id || u.id) !== (user._id || user.id)
+        )
+      );
+
     } catch (err) {
-      setInsertOkMsg(err?.message || "Eroare la inserție.");
+      alert("Eroare la ștergerea adminului");
     }
   };
 
   return (
-    <div className="user-page">
-      <h1 className="up-title">Administratori</h1>
+    <div className="user-admin-container">
+      <div className="user-form-section">
+        <h2>{isEditing ? "Editează Admin" : "Adaugă Admin Nou"}</h2>
+        <form onSubmit={handleSubmit}>
+          <input
+            type="text"
+            name="username"
+            placeholder="Username"
+            value={form.username}
+            onChange={handleChange}
+          />
+          <input
+            type="password"
+            name="password"
+            placeholder="Parolă"
+            value={form.password}
+            onChange={handleChange}
+          />
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            value={form.email}
+            onChange={handleChange}
+          />
+          <input
+            type="text"
+            name="phone"
+            placeholder="Telefon"
+            value={form.phone}
+            onChange={handleChange}
+          />
+          <div className="form-buttons">
+            <button type="submit">{isEditing ? "Update" : "Create"}</button>
+            {isEditing && (
+              <button
+                type="button"
+                onClick={() => {
+                  setForm({
+                    username: "",
+                    password: "",
+                    email: "",
+                    phone: "",
+                    role: "ADMIN",
+                    id: null,
+                  });
+                  setIsEditing(false); 
+                }}
+              >
+                Cancel
+              </button>
 
-      {/* Lista admini */}
-      <div className="card list-card">
-        {loading && <div className="info">Se încarcă…</div>}
-        {error && <div className="error">{error}</div>}
-
-        {!loading && (
-          <ul className="admin-ul">
-            {(admins ?? []).map((u) => (
-              <li className="admin-li" key={keyOf(u)}>
-                <div className="admin-info">
-                  <div className="admin-name">
-                    <strong>{u?.username}</strong>
-                    <span className="admin-role">ADMIN</span>
-                  </div>
-                  <div className="admin-meta">
-                    <span>{u?.email ?? "-"}</span>
-                    <span>{u?.phone ?? "-"}</span>
-                  </div>
-                </div>
-                <div className="admin-actions">
-                  <button className="btn btn-secondary" onClick={() => handleEdit(u)}>
-                    Edit
-                  </button>
-                  <button className="btn btn-danger" onClick={() => handleDelete(u)}>
-                    Delete
-                  </button>
-                </div>
-              </li>
-            ))}
-            {!loading && (admins ?? []).length === 0 && !error && (
-              <li className="empty">Nu există administratori.</li>
             )}
-          </ul>
-        )}
+          </div>
+        </form>
       </div>
 
-      {/* Caseta de acțiuni (mai mare, fără padding pe card) */}
-      <div className="card actions-card">
-        <div className="actions-header">
-          <button className="btn btn-primary toggle" onClick={() => setIsAddOpen((v) => !v)}>
-            {isAddOpen ? "– Închide formularul" : "+ Adaugă user"}
-          </button>
-        </div>
-
-        {isAddOpen && (
-          <div className="form big-form">
-            <div className="row">
-              <label>Username</label>
-              <input
-                name="username"
-                value={form.username}
-                onChange={handleChange}
-                placeholder="ex: admin01"
-              />
-            </div>
-            <div className="row">
-              <label>Password</label>
-              <input
-                type="password"
-                name="password"
-                value={form.password}
-                onChange={handleChange}
-                placeholder="••••••"
-              />
-            </div>
-            <div className="row">
-              <label>Email</label>
-              <input
-                type="email"
-                name="email"
-                value={form.email}
-                onChange={handleChange}
-                placeholder="mail@exemplu.ro"
-              />
-            </div>
-            <div className="row">
-              <label>Phone</label>
-              <input
-                name="phone"
-                value={form.phone}
-                onChange={handleChange}
-                placeholder="07xx xxx xxx"
-              />
-            </div>
-
-            <div className="actions-row">
-              <button className="btn btn-success" onClick={handleInsert}>
-                Insert
-              </button>
-            </div>
-
-            {!!insertOkMsg && <div className="ok-msg">{insertOkMsg}</div>}
-          </div>
-        )}
+      <div className="users-list-section">
+        <h2>Lista Adminilor</h2>
+        {loading && <p>Se încarcă...</p>}
+        {error && <p className="error">{error}</p>}
+        <ul className="users-list">
+          {users.map((u) => (
+            <li key={u._id} className="user-card">
+              <h3>{u.username}</h3>
+              <p>Email: {u.email}</p>
+              <p>Telefon: {u.phone || "—"}</p>
+              <p>Rol: {u.role}</p>
+              <div className="user-buttons">
+                <button onClick={() => handleEdit(u)}>Edit</button>
+                <button onClick={() => handleDelete(u)}>Delete</button>
+              </div>
+            </li>
+          ))}
+          {users.length === 0 && !loading && <p>Nu există admini.</p>}
+        </ul>
       </div>
     </div>
   );
