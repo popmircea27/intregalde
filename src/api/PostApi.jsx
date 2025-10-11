@@ -1,8 +1,9 @@
 import { useMemo } from "react";
 import { useUsersApi } from "./UserApi";
-
+import Logger from "../utils/logger";
+import { wrapApi } from "./ApiWrapper";
 export function usePostsApi() {
-  const api = useUsersApi(); // ia baseURL din VITE_API_BASE_URL
+  const api = wrapApi(useUsersApi()); // ia baseURL din VITE_API_BASE_URL
 
   return useMemo(() => ({
     /** Listă toate postările */

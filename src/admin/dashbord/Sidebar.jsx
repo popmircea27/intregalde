@@ -41,20 +41,14 @@ export default function Sidebar({ activeTab, setActiveTab }) {
           Adăugare Admini
         </li>
 
-        <li
-          className={`menu-item ${activeTab === "addPost" ? "active" : ""}`}
-          onClick={() => setActiveTab("addPost")}
-        >
-          <MdPostAdd className="menu-icon" />
-          Adăugare Postare Nouă
-        </li>
+       
 
         <li
           className={`menu-item ${activeTab === "editPosts" ? "active" : ""}`}
           onClick={() => setActiveTab("editPosts")}
         >
           <MdEditNote className="menu-icon" />
-          Vizualizare & Editare Posturi Vechi
+          Adăugare Vizualizare & Editare Posturi
         </li>
 
         <li

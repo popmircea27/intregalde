@@ -85,7 +85,7 @@ export default function PostsAdmin() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+         
         if (!form.title.trim() || !form.author.trim() || !form.content.trim()) {
             alert("Titlu, autor și conținut sunt obligatorii");
             return;
@@ -101,7 +101,7 @@ export default function PostsAdmin() {
             const saved = isEditing && form._id
                 ? await postsApi.update(form._id, postData)
                 : await postsApi.create(postData);
-
+                 console.log("Saved post", saved);
             const normalized = normalizePost(saved);
 
             setForm({ title: "", content: "", author: "", _id: null });

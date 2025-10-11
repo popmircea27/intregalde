@@ -1,7 +1,9 @@
 import { useMemo } from 'react';
+import { wrapApi } from "./ApiWrapper";
 
 export function useUsersApi() {
-    const baseUrl = import.meta.env.VITE_API_BASE_URL; 
+    const baseUrl = import.meta.env.VITE_API_BASE_URL;
+    
 
     const makeUrl = (path, params) => {
         const q = params && Object.keys(params).length

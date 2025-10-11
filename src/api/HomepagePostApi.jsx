@@ -1,8 +1,8 @@
 import { useMemo } from "react";
 import { useUsersApi } from "./UserApi";
-
+import { wrapApi } from "./ApiWrapper"; 
 export function useHomepagePostsApi() {
-  const api = useUsersApi(); // ia baseURL din VITE_API_BASE_URL
+  const api = wrapApi(useUsersApi()); // ia baseURL din VITE_API_BASE_URL
 
   return useMemo(() => ({
     /** Listă toate homepage posts */
