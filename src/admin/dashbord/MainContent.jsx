@@ -18,10 +18,20 @@ export default function MainContent({ activeTab }) {
   // Fetch homepage posts
   useEffect(() => {
     if (activeTab !== "homepage") return;
-    homepageApi.getAll()
-      .then((res) => setHomepagePosts(toArray(res)))
-      .catch(() => setHomepagePosts([]));
-  }, [activeTab, homepageApi]);
+    
+    let mounted = true;
+    const fetchPosts = async () => {
+        try {
+            const res = await homepageApi.getAll();
+            if (mounted) setHomepagePosts(toArray(res));
+        } catch {
+            if (mounted) setHomepagePosts([]);
+        }
+    };
+    
+    fetchPosts();
+    return () => { mounted = false; };
+}, [activeTab, homepageApi]); // doar homepageApi, nu metoda
 
   // Fetch posts
   useEffect(() => {
