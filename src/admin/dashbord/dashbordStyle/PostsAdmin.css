@@ -26,6 +26,10 @@
   --radius-sm: 8px;
 
   --focus: 0 0 0 3px rgba(142,184,60,0.35);
+
+  --btn-radius: 16px;      /* raza uniformă */
+  --btn-padding-y: 12px;   /* padding vertical */
+  --btn-padding-x: 20px;   /* padding orizontal */
 }
 
 * { box-sizing: border-box; }
@@ -97,8 +101,8 @@ html, body {
 .btn {
   appearance: none;
   border: none;
-  border-radius: 9999px; /* pill */
-  padding: 12px 18px;
+  border-radius: var(--btn-radius);
+  padding: var(--btn-padding-y) var(--btn-padding-x);
   font-weight: 700;
   cursor: pointer;
   transition: transform .06s ease, filter .2s ease, background-color .2s ease;
@@ -262,11 +266,11 @@ html, body {
   font-family: "Asap", sans-serif;
   font-weight: 700;
   font-size: 1rem;
-  padding: 14px 22px;
+  padding: var(--btn-padding-y) var(--btn-padding-x);
   border: none;
-  border-radius: 16px;   /* ca butonul Create din screenshot */
+  border-radius: var(--btn-radius);
   cursor: pointer;
-  width: 100%;           /* full width ca Create */
+  width: 100%;
   text-align: center;
   box-shadow: 0 3px 8px rgba(0,0,0,0.12);
   transition: transform .06s ease, filter .2s ease, background-color .2s ease;
@@ -337,13 +341,13 @@ html, body {
 
 /* Buton principal mare, vizibil – aliniat cu upload */
 .btn-hero {
-  font-family: "Asap", sans-serif;   /* identic cu upload */
+  font-family: "Asap", sans-serif;
   font-weight: 800;
-  font-size: 1.08rem;                /* mai mare */
-  padding: 16px 24px;                /* mai înalt/lățit */
-  border-radius: 140px;               /* ca upload */
+  font-size: 1.08rem;
+  padding: var(--btn-padding-y) var(--btn-padding-x);
+  border-radius: var(--btn-radius);
   letter-spacing: 0.2px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.14);  /* mai vizibil */
+  box-shadow: 0 4px 12px rgba(0,0,0,0.14);
 }
 
 /* opțional: un pic mai „tare" la hover */

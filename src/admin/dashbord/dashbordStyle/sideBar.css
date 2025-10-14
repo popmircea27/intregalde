@@ -2,13 +2,14 @@
   width: 240px;
   background-color: #556b2f; /* olive green */
   color: #fff;
-  padding: 20px;
-  border-top-right-radius: 16px;
-  border-bottom-right-radius: 16px;
+  padding: 24px 22px; /* adaugă puțin spațiu pe lateral */
+  border-radius: 20px; /* bară mai rotunjită uniform */
+  margin: 10px;
   display: flex;
   flex-direction: column;
   font-family: "Asap", sans-serif;
   align-items: center; /* centrează conținutul */
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
 }
 
 .sidebar-title {
@@ -70,12 +71,13 @@
   border: none;
   width: 100%;
   padding: 16px 18px; /* mai mare decât celelalte */
-  border-radius: 14px;
+  border-radius: 16px;
   font-size: 1.25rem; /* mai mare decât butoanele */
   font-weight: bold;
   cursor: pointer;
   transition: background-color 0.2s ease, transform 0.1s ease;
   text-align: center;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
 }
 
 .logout-btn:hover {
