@@ -13,26 +13,24 @@ export default function MainContent({ activeTab }) {
   // helper: întoarce mereu un array
   const toArray = (res) =>
     Array.isArray(res?.data) ? res.data :
-    Array.isArray(res) ? res : [];
+      Array.isArray(res) ? res : [];
 
   // Fetch homepage posts
   useEffect(() => {
     if (activeTab !== "homepage") return;
-    
-    let mounted = true;
-    const fetchPosts = async () => {
-        try {
-            const res = await homepageApi.getAll();
-            if (mounted) setHomepagePosts(toArray(res));
-        } catch {
-            if (mounted) setHomepagePosts([]);
-        }
-    };
-    
-    fetchPosts();
-    return () => { mounted = false; };
-}, [activeTab, homepageApi]); // doar homepageApi, nu metoda
 
+    let mounted = true;
+
+    homepageApi.getAll()
+      .then(res => {
+        if (mounted) setHomepagePosts(toArray(res));
+      })
+      .catch(() => {
+        if (mounted) setHomepagePosts([]);
+      });
+
+    return () => { mounted = false; };
+  }, [activeTab, homepageApi.getAll]);
   // Fetch posts
   useEffect(() => {
     if (activeTab !== "posts") return;
