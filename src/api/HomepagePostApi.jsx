@@ -4,10 +4,10 @@ import { wrapApi } from "./ApiWrapper";
 export function useHomepagePostsApi() {
     const usersApi = useUsersApi(); // memoizat intern
     const api = useMemo(() => wrapApi(usersApi), [usersApi]); // wrapper memorat
-
+    const getAll = useMemo(() => () => api.get("/api/homepage"), [api]);
   return useMemo(() => ({
     /** Listă toate homepage posts */
-    getAll: () => api.get("/api/homepage"),
+    getAll,
 
     /** Ia un homepage post după ID */
     getById: (id) => {
@@ -33,5 +33,5 @@ export function useHomepagePostsApi() {
       if (!id) throw new Error("id obligatoriu");
       return api.del(`/api/homepage/${encodeURIComponent(id)}`);
     }
-  }), [api]);
+  }), [api, getAll]);
 }

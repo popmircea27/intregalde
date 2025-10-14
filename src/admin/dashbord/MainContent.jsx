@@ -17,20 +17,17 @@ export default function MainContent({ activeTab }) {
 
   // Fetch homepage posts
   useEffect(() => {
-    if (activeTab !== "homepage") return;
+  if (activeTab !== "homepage") return;
 
-    let mounted = true;
+  let mounted = true;
 
-    homepageApi.getAll()
-      .then(res => {
-        if (mounted) setHomepagePosts(toArray(res));
-      })
-      .catch(() => {
-        if (mounted) setHomepagePosts([]);
-      });
+  homepageApi.getAll()
+    .then(res => { if (mounted) setHomepagePosts(toArray(res)); })
+    .catch(() => { if (mounted) setHomepagePosts([]); });
 
-    return () => { mounted = false; };
-  }, [activeTab, homepageApi.getAll]);
+  return () => { mounted = false; };
+}, [activeTab, homepageApi.getAll]); // acum getAll e stabil
+
   // Fetch posts
   useEffect(() => {
     if (activeTab !== "posts") return;
