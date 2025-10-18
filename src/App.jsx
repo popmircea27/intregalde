@@ -1,16 +1,33 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Navbar from "./components/navBar/NavBar";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+
 import DashBord from "./admin/dashbord/DashBord";
 import LoginPage from "./admin/login/LoginPage";
+import PrivateRoute from "./components/PrivateRoute";
+import PublicRoute from "./components/PublicRoute";
 
 function App() {
   return (
     <Router>
-      {/* <Navbar /> */}
       <Routes>
-        <Route path="/" element={<LoginPage />} />
-        <Route path="/dashboard" element={<DashBord />} />
+        {/* login doar pentru utilizatori nelogați */}
+        <Route
+          path="/"
+          element={
+            <PublicRoute>
+              <LoginPage />
+            </PublicRoute>
+          }
+        />
 
+        {/* dashboard doar pentru admin */}
+        <Route
+          path="/dashboard"
+          element={
+            <PrivateRoute requiredRole="ADMIN">
+              <DashBord />
+            </PrivateRoute>
+          }
+        />
       </Routes>
     </Router>
   );

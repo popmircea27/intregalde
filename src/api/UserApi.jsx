@@ -4,7 +4,7 @@ import Logger from '../utils/logger';
 
 export function useUsersApi() {
     const baseUrl = import.meta.env.VITE_API_BASE_URL;
-    
+
 
     const makeUrl = (path, params) => {
         const q = params && Object.keys(params).length
@@ -22,8 +22,10 @@ export function useUsersApi() {
         const isUrlEncoded = asFormUrlEncoded && body instanceof URLSearchParams;
 
         // 🔑 Ia token-ul JWT din localStorage
-        const token = localStorage.getItem('token');
-
+        const token = localStorage.getItem("token");
+        if (!token || token === "null" || token.trim() === "") {
+            localStorage.removeItem("token");
+        }
         const finalHeaders = {
             'Accept': 'application/json, text/plain;q=0.9,*/*;q=0.8',
             ...(isFormData || isUrlEncoded ? {} : { 'Content-Type': 'application/json' }),
